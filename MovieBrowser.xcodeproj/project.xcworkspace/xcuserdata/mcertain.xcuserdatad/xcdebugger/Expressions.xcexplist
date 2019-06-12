@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "MovieDataManager.setExternalIDs(atIndex:withData:):MovieDataManager.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieDetailsController.setupView(withDetails:):MovieDetailsController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieDataManager.AddToWatchList(newItem:):MovieDataManager.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieDataManager.storeMovieData(receivedJSONData:):MovieDataManager.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in MovieDetailsController.requestMovieDetails():MovieDetailsController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "String(data: content, encoding: .utf8)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "specialized closure #1 in static EndpointRequestor.requestEndpointData(endpoint:withUIViewController:errorHandler:successHandler:busyTheView:withArgument:):EndpointRequestor.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static MovieDetailsController.AddToWatchList(newItem:):MovieDetailsController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "watchList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static EndpointRequestor.requestEndpointData(endpoint:withUIViewController:errorHandler:successHandler:busyTheView:withArgument:):EndpointRequestor.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in AvailableMovieController.fetchMovieData():AvailableMovieController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieDataManager.storeMovieData(receivedJSONData:forPage:):MovieDataManager.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "cachedPages.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MovieDataManager.storeExternalIDs(atIndex:receivedJSONData:):MovieDataManager.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieDetailsController.requestMovieDetails():MovieDetailsController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieDataManager.getNumberUserVotes(atIndex:):MovieDataManager.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "resultPages?.results[atIndex].vote_count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static NetworkAvailability.networkAvailable():NetworkAvailability.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "NetworkAvailability.reachability">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in MovieDetailsController.dispatchViewUpdate():MovieDetailsController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieDataManager.getMovieCount():MovieDataManager.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "resultPages">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MovieDataManager.setExternalIDs(withData:):MovieDataManager.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieDataManager.storeExternalIDs(receivedJSONData:):MovieDataManager.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieDetailsController.addToWatchListButtonAction(_:):MovieDetailsController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "MovieDetailsController.watchListCache">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MovieDataManager.getVoteStarRating(atIndex:):MovieDataManager.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static EndpointRequestor.openMovieLink(withEndpoint:usingMovieID:):EndpointRequestor.swift">
+      </ContextState>
+      <ContextState
+         contextName = "AvailableMovieController.tableView(_:prefetchRowsAt:):AvailableMovieController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "indexPaths[indexPaths.count-1].row">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
