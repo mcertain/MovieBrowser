@@ -65,7 +65,7 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Register network change events and attempt to fetch the movie details when the view loads
+        // Register for network change events and attempt to fetch the movie details when the view loads
         NetworkAvailability.setupReachability(controller: self, selector: #selector(self.reachabilityChanged(note:)) )
     }
     
@@ -76,9 +76,7 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
     }
     
     @objc func reachabilityChanged(note: Notification) {
-        
         let reachability = note.object as! Reachability
-        
         if(reachability.connection != .none) {
             // When the network returns, try to fetch (or refresh the current) movie details
             self.fetchMovieDetailsAfterNetworkReturned()
@@ -97,7 +95,7 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
     }
     
     func setupDefaultView() {
-        // Used when the network is down and the cache can't be updated with a new entry
+        // Used when the network is down and/or the cached data isn't available, use the following
         self.movieTitleLabel.text = "Unavailable"
         self.movieDetailsLabel.text = "Try again later."
         self.movieCoverImageView.image = UIImage(named: "NoConnection")
@@ -106,11 +104,11 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
         self.watchListButton.isHidden = true
     }
     
-    func setupView(withDetails: MovieItem) {
+    func setupView() {
         // Used when there is a valid cache entry to display movie details
-        self.movieTitleLabel.text = withDetails.title
-        self.movieDetailsLabel.text = withDetails.overview
-        self.movieCoverImageView.image = withDetails.getUIImageData()
+        self.movieTitleLabel.text = movieDetails?.title
+        self.movieDetailsLabel.text = movieDetails?.overview
+        self.movieCoverImageView.image = movieDetails?.getUIImageData()
         
         let pMovieDataManager = MovieDataManager.GetInstance()
         let existsOnWatchList = pMovieDataManager?.ExistsInWatchList(withID: self.movieID!)
@@ -146,13 +144,13 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
                 return
             }
             // Otherwise, take the information from cache and show the movie details
-            self.setupView(withDetails: self.movieDetails!)
+            self.setupView()
         }
     }
     
     func requestMovieDetails() {
         // Fetch the External Link ID Data
-        self.fetchExternalIDs(withID: movieID!)
+        self.fetchExternalIDs()
         
         // And then update the view with what was just stored in cache
         self.dispatchViewUpdate()
@@ -176,7 +174,7 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
         }
     }
     
-    func fetchExternalIDs(withID: String) {
+    func fetchExternalIDs() {
         // If the externalIDs haven't be stored in cache yet, then fetch and store them
         let externalIDs = movieDetails?.getExternalIDs()
         if(externalIDs == nil) {
@@ -197,7 +195,7 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
                                                   errorHandler: nil,
                                                   successHandler: successHandler,
                                                   busyTheView: true,
-                                                  withArgument: withID as AnyObject)
+                                                  withArgument: movieID as AnyObject)
         }
         else {
             // Otherwise, display links with ID from cache
