@@ -146,20 +146,6 @@ class MovieDataManager {
         return true
     }
     
-    func storeExternalIDs(atIndex: Int, receivedJSONData: Data?) -> Bool {
-        if(receivedJSONData != nil) {
-            do {
-                let externalIDs = try JSONDecoder().decode(ExternalIDs.self, from: receivedJSONData!)
-                self.setExternalIDs(atIndex: atIndex, withData: externalIDs)
-            }
-            catch let decodeError {
-                print("Failed to decode External ID JSON Data: \(decodeError)")
-                return false
-            }
-        }
-        return true
-    }
-    
     func getMovieCount() -> Int {
         guard cachedPages.indices.contains(0) == true else {
             return 0

@@ -159,8 +159,9 @@ class AvailableMovieController: UITableViewController, UITableViewDataSourcePref
         if let pMovieDetailsController = mainStoryBoard.instantiateViewController(withIdentifier: "MovieDetailsController") as? MovieDetailsController {
             let idx:Int = indexPath.row
             let pMovieDataManager = MovieDataManager.GetInstance()
-            pMovieDetailsController.movieID = pMovieDataManager?.getMovieDetails(atIndex: idx)?.getMovieIDString()
-            pMovieDetailsController.movieTableViewIdx = idx
+            let movieDetails = pMovieDataManager?.getMovieDetails(atIndex: idx)
+            pMovieDetailsController.movieID = movieDetails?.getMovieIDString()
+            pMovieDetailsController.movieDetails = movieDetails
             if(pMovieDetailsController.movieID != nil) {
                 navigationController?.pushViewController(pMovieDetailsController, animated: true)
             }

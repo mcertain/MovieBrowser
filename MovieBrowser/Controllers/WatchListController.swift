@@ -69,8 +69,9 @@ class WatchListController: UITableViewController {
         if let pMovieDetailsController = mainStoryBoard.instantiateViewController(withIdentifier: "MovieDetailsController") as? MovieDetailsController {
             let idx:Int = indexPath.row
             let pMovieDataManager = MovieDataManager.GetInstance()
-            pMovieDetailsController.movieID = pMovieDataManager?.GetWatchListItem(atIndex: idx).getMovieIDString()
-            pMovieDetailsController.movieTableViewIdx = idx
+            let movieDetails = pMovieDataManager?.GetWatchListItem(atIndex: idx)
+            pMovieDetailsController.movieID = movieDetails?.getMovieIDString()
+            pMovieDetailsController.movieDetails = movieDetails
             navigationController?.pushViewController(pMovieDetailsController, animated: true)
         }
         else {

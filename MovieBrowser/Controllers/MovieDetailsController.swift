@@ -15,7 +15,7 @@ let removeToWatchListString: String = "Remove From Watchlist ♡"
 class MovieDetailsController : UIViewController, UINavigationControllerDelegate {
     
     var movieID: String?
-    var movieTableViewIdx: Int?
+    var movieDetails: MovieItem?
     @IBOutlet var movieTitleLabel: UILabel!
     @IBOutlet var movieDetailsLabel: UITextView!
     @IBOutlet var movieCoverImageView: UIImageView!
@@ -24,30 +24,30 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
     @IBOutlet var watchListButton: UIButton!
     
     @IBAction func imdbButtonAction(_ sender: Any) {
-        guard let movieDetails = MovieDataManager.GetInstance()?.getMovieDetails(atIndex: movieTableViewIdx ?? 0) else {
+        guard movieDetails != nil else {
             return
         }
         EndpointRequestor.openMovieLink(withEndpoint: .OPEN_IMDB_DETAILS,
-                                        queryString: movieDetails.external_ids!.imdb_id)
+                                        queryString: movieDetails?.external_ids!.imdb_id)
     }
     
     @IBAction func amazonButtonAction(_ sender: Any) {
-        guard let movieDetails = MovieDataManager.GetInstance()?.getMovieDetails(atIndex: movieTableViewIdx ?? 0) else {
+        guard movieDetails != nil else {
             return
         }
         EndpointRequestor.openMovieLink(withEndpoint: .OPEN_AMAZON_DETAILS,
-                                        queryString: movieDetails.getMovieTitleQueryString()!)
+                                        queryString: movieDetails?.getMovieTitleQueryString()!)
     }
     
     @IBAction func addToWatchListButtonAction(_ sender: Any) {
         let pMovieDataManager = MovieDataManager.GetInstance()
-        guard let movieDetails = pMovieDataManager?.getMovieDetails(atIndex: movieTableViewIdx ?? 0) else {
+        guard movieDetails != nil else {
             return
         }
         
         let pressedButton = (sender as! UIButton)
         if(pressedButton.tag == 0) {
-            pMovieDataManager?.AddToWatchList(newItem: movieDetails)
+            pMovieDataManager?.AddToWatchList(newItem: movieDetails!)
             pressedButton.tag = 1
             pressedButton.setTitle(removeToWatchListString, for: .normal)
         }
@@ -124,9 +124,9 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
         }
     }
     
-    func setupExternalLinkButtons(withDetails: MovieItem) {
+    func setupExternalLinkButtons() {
         DispatchQueue.main.async {
-            if(withDetails.external_ids == nil) {
+            if(self.movieDetails?.external_ids == nil) {
                 self.amazonButton.isHidden = true
                 self.imdbButton.isHidden = true
             }
@@ -141,19 +141,18 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
         DispatchQueue.main.async {
             // If the movie details are missing, then just show the default view
             // indicating the information is unavailable
-            let pMovieDataManager = MovieDataManager.GetInstance()
-            guard let movieDetails = pMovieDataManager?.getMovieDetails(atIndex: self.movieTableViewIdx ?? 0) else {
+            guard self.movieDetails != nil else {
                 self.setupDefaultView()
                 return
             }
             // Otherwise, take the information from cache and show the movie details
-            self.setupView(withDetails: movieDetails)
+            self.setupView(withDetails: self.movieDetails!)
         }
     }
     
     func requestMovieDetails() {
         // Fetch the External Link ID Data
-        self.fetchExternalIDs(atIndex: movieTableViewIdx!, withID: movieID!)
+        self.fetchExternalIDs(withID: movieID!)
         
         // And then update the view with what was just stored in cache
         self.dispatchViewUpdate()
@@ -177,11 +176,8 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
         }
     }
     
-    func fetchExternalIDs(atIndex: Int, withID: String) {
-        let pMovieDataManager = MovieDataManager.GetInstance()
-        
+    func fetchExternalIDs(withID: String) {
         // If the externalIDs haven't be stored in cache yet, then fetch and store them
-        let movieDetails = pMovieDataManager?.getMovieDetails(atIndex: atIndex)
         let externalIDs = movieDetails?.getExternalIDs()
         if(externalIDs == nil) {
             let successHandler = { (receivedData: Data?, withArgument: AnyObject?) -> Void in
@@ -191,8 +187,8 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
                 }
                 
                 // Store the External IDs in the Movie Data Manager's cache
-                if((MovieDataManager.GetInstance()?.storeExternalIDs(atIndex: atIndex, receivedJSONData: content))!) {
-                    self.setupExternalLinkButtons(withDetails: (pMovieDataManager?.getMovieDetails(atIndex: atIndex)!)!)
+                if(self.storeExternalIDs(receivedJSONData: content)) {
+                    self.setupExternalLinkButtons()
                 }
             }
             
@@ -205,7 +201,21 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
         }
         else {
             // Otherwise, display links with ID from cache
-            self.setupExternalLinkButtons(withDetails: movieDetails!)
+            self.setupExternalLinkButtons()
         }
+    }
+
+    func storeExternalIDs(receivedJSONData: Data?) -> Bool {
+        if(receivedJSONData != nil) {
+            do {
+                let externalIDs = try JSONDecoder().decode(ExternalIDs.self, from: receivedJSONData!)
+                movieDetails?.external_ids = externalIDs
+            }
+            catch let decodeError {
+                print("Failed to decode External ID JSON Data: \(decodeError)")
+                return false
+            }
+        }
+        return true
     }
 }
