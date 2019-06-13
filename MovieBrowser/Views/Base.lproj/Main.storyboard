@@ -20,18 +20,6 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" name="systemPinkColor" catalog="System" colorSpace="catalog"/>
                         <color key="separatorColor" name="systemPinkColor" catalog="System" colorSpace="catalog"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="rTv-u0-Q7a">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rTv-u0-Q7a" id="NU8-nQ-QBx">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </tableViewCellContentView>
-                                <color key="tintColor" name="systemPinkColor" catalog="System" colorSpace="catalog"/>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="ARi-SK-rwj" id="rXK-4b-GWy"/>
                             <outlet property="delegate" destination="ARi-SK-rwj" id="b9F-x2-yyB"/>
@@ -40,7 +28,7 @@
                     <tabBarItem key="tabBarItem" title="Popular" image="PopularIcon" id="W46-7g-dzE"/>
                     <navigationItem key="navigationItem" title="Movies" id="z3E-Cc-KSO"/>
                     <connections>
-                        <segue destination="4qO-ak-okY" kind="show" id="eci-wd-AZY"/>
+                        <segue destination="4qO-ak-okY" kind="show" identifier="SegueToWatchList" id="eci-wd-AZY"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pa3-hU-gt9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -76,16 +64,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="zrC-Ia-9YL">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zrC-Ia-9YL" id="Rrl-vP-NbI">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="XUv-B8-vUI" id="jIN-DG-CG3"/>
                             <outlet property="delegate" destination="XUv-B8-vUI" id="Ph9-Sk-09M"/>

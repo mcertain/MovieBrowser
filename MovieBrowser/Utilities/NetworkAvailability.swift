@@ -21,7 +21,7 @@ class NetworkAvailability {
     }
     
     static func setupReachability(controller: UIViewController?, selector: Selector) {
-        NotificationCenter.default.addObserver(controller, selector: selector, name: .reachabilityChanged, object: NetworkAvailability.reachability)
+        NotificationCenter.default.addObserver(controller as Any, selector: selector, name: .reachabilityChanged, object: NetworkAvailability.reachability)
         do{
             try NetworkAvailability.reachability?.startNotifier()
         }catch{
@@ -30,7 +30,7 @@ class NetworkAvailability {
     }
     
     static func removeReachability(controller: UIViewController?, selector: Selector) {
-        NotificationCenter.default.removeObserver(controller, name: .reachabilityChanged, object: NetworkAvailability.reachability)
+        NotificationCenter.default.removeObserver(controller as Any, name: .reachabilityChanged, object: NetworkAvailability.reachability)
     }
     
     static func networkAvailable() -> Bool {

@@ -191,8 +191,9 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
                 }
                 
                 // Store the External IDs in the Movie Data Manager's cache
-                MovieDataManager.GetInstance()?.storeExternalIDs(atIndex: atIndex, receivedJSONData: content)
-                self.setupExternalLinkButtons(withDetails: (pMovieDataManager?.getMovieDetails(atIndex: atIndex)!)!)
+                if((MovieDataManager.GetInstance()?.storeExternalIDs(atIndex: atIndex, receivedJSONData: content))!) {
+                    self.setupExternalLinkButtons(withDetails: (pMovieDataManager?.getMovieDetails(atIndex: atIndex)!)!)
+                }
             }
             
             EndpointRequestor.requestEndpointData(endpoint: .EXTERNAL_ID_QUERY,
