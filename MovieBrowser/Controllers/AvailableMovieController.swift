@@ -161,7 +161,9 @@ class AvailableMovieController: UITableViewController, UITableViewDataSourcePref
             let pMovieDataManager = MovieDataManager.GetInstance()
             pMovieDetailsController.movieID = pMovieDataManager?.getMovieDetails(atIndex: idx)?.getMovieIDString()
             pMovieDetailsController.movieTableViewIdx = idx
-            navigationController?.pushViewController(pMovieDetailsController, animated: true)
+            if(pMovieDetailsController.movieID != nil) {
+                navigationController?.pushViewController(pMovieDetailsController, animated: true)
+            }
         }
         else {
             print("Could not load the Chat Message Controller view controller")
