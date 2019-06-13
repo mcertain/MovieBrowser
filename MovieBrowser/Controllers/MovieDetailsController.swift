@@ -171,6 +171,10 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
                 self.dispatchViewUpdate()
             }
         }
+        else {
+            // Show default view, network might have went offline
+            self.setupDefaultView()
+        }
     }
     
     func fetchExternalIDs(atIndex: Int, withID: String) {
