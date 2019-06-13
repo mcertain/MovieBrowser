@@ -25,7 +25,6 @@ class AvailableMovieController: UITableViewController, UITableViewDataSourcePref
     
     func setupTableView() {
         tableView.prefetchDataSource = self
-        //tableView.register(MovieListCell.self, forCellReuseIdentifier: "MovieListCell")
         tableView.register(UINib(nibName: "MovieListCell", bundle: nil), forCellReuseIdentifier: "MovieListCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = MOVIE_LIST_CELL_HEIGHT
