@@ -73,7 +73,7 @@ class EndpointRequestor {
         case .EXTERNAL_ID_QUERY:
             remoteLocation = URL(string: EXTERNAL_ID_QUERY_PREFIX + (withArgument as! String) + EXTERNAL_ID_QUERY_SUFFIX)
         case .POSTER_IMAGE_THUMBNAIL:
-            remoteLocation = MovieDataManager.GetInstance()?.getMovieDetails(atIndex: (withArgument as! Int))?.getPosterImageThumbURL()
+            remoteLocation = (withArgument as! URL)
         }
         
         guard remoteLocation != nil else {

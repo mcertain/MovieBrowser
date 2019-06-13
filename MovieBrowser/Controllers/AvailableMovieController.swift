@@ -75,7 +75,8 @@ class AvailableMovieController: UITableViewController, UITableViewDataSourcePref
         let pMovieDataManager = MovieDataManager.GetInstance()
         
         // If the movie cover image hasn't be stored in cache yet, then fetch and store it
-        let posterImage = pMovieDataManager?.getMovieDetails(atIndex: atIndex)?.getUIImageData()
+        let movieDetails = pMovieDataManager?.getMovieDetails(atIndex: atIndex)
+        let posterImage = movieDetails?.getUIImageData()
         if(posterImage == nil) {
             let successHandler = { (receivedData: Data?, withArgument: AnyObject?) -> Void in
                 guard let content = receivedData else {
@@ -92,12 +93,13 @@ class AvailableMovieController: UITableViewController, UITableViewDataSourcePref
                 }
             }
             
+            let posterURL = movieDetails?.getPosterImageThumbURL()
             EndpointRequestor.requestEndpointData(endpoint: .POSTER_IMAGE_THUMBNAIL,
                                                   withUIViewController: self,
                                                   errorHandler: nil,
                                                   successHandler: successHandler,
                                                   busyTheView: false,
-                                                  withArgument: atIndex as AnyObject)
+                                                  withArgument: posterURL as AnyObject)
         }
         else {
             // Otherwise, if it's already cached then display it

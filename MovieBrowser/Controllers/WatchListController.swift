@@ -14,7 +14,9 @@ class WatchListController: UITableViewController {
         super.viewWillAppear(animated)
         // Register network change events and attempt to fetch the movie details when the view loads
         NetworkAvailability.setupReachability(controller: self, selector: #selector(self.reachabilityChanged(note:)) )
-        self.tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -28,7 +30,9 @@ class WatchListController: UITableViewController {
         let reachability = note.object as! Reachability
         if(reachability.connection != .none) {
             // Once the network is confirmed to be available, then reload the movie watch list data
-            self.tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
         else {
             // When the network is disconnected, then show an alert to the user

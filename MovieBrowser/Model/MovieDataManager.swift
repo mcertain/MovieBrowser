@@ -18,7 +18,14 @@ struct ResultsPage: Decodable, Equatable  {
     var results:       [MovieItem]
 }
 
-struct MovieItem: Decodable, Equatable {
+class MovieItem: Decodable, Equatable {
+    static func == (lhs: MovieItem, rhs: MovieItem) -> Bool {
+        if(lhs.id == rhs.id) {
+            return true
+        }
+        return false
+    }
+    
     let adult:             Bool?
     let backdrop_path:     String?
     let genre_ids:         [Int]?

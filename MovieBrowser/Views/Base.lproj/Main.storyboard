@@ -35,11 +35,11 @@
             </objects>
             <point key="canvasLocation" x="223" y="136"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Movies-->
         <scene sceneID="IKv-1N-eeU">
             <objects>
                 <tabBarController id="cdN-4d-Fnu" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="Djr-rM-wrU"/>
+                    <navigationItem key="navigationItem" title="Movies" id="Djr-rM-wrU"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="lT7-NH-1Da">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>

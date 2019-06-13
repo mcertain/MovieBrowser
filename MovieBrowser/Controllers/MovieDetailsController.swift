@@ -149,8 +149,11 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
     }
     
     func requestMovieDetails() {
-        // Fetch the External Link ID Data
+        // Fetch the External Link ID Data if it's not already cached
         self.fetchExternalIDs()
+        
+        // Fetch the Movie Poster Image if it's not already cached
+        self.fetchMoviePosterImage()
         
         // And then update the view with what was just stored in cache
         self.dispatchViewUpdate()
@@ -171,6 +174,34 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
         else {
             // Show default view, network might have went offline
             self.setupDefaultView()
+        }
+    }
+    func fetchMoviePosterImage() {
+        // If the movie poster image hasn't be stored in cache yet, then fetch and store it
+        let posterImage = movieDetails?.imagePosterData
+        if(posterImage == nil) {
+            let successHandler = { (receivedData: Data?, withArgument: AnyObject?) -> Void in
+                guard let posterImageData = receivedData else {
+                    print("There was no data at the requested URL.")
+                    return
+                }
+                
+                // Store the Movie Poster Image
+                self.movieDetails?.imagePosterData = posterImageData
+                
+                // Then update the view to display the movie poster image
+                DispatchQueue.main.async {
+                    self.movieCoverImageView.image = self.movieDetails?.getUIImageData()
+                }
+            }
+            
+            let posterURL = movieDetails?.getPosterImageThumbURL()
+            EndpointRequestor.requestEndpointData(endpoint: .POSTER_IMAGE_THUMBNAIL,
+                                                  withUIViewController: self,
+                                                  errorHandler: nil,
+                                                  successHandler: successHandler,
+                                                  busyTheView: false,
+                                                  withArgument: posterURL as AnyObject)
         }
     }
     
