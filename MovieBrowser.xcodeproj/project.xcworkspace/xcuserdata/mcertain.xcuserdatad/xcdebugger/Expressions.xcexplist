@@ -6,6 +6,9 @@
          contextName = "MovieDataManager.setExternalIDs(atIndex:withData:):MovieDataManager.swift">
       </ContextState>
       <ContextState
+         contextName = "AvailableMovieController.fetchMoviePosterImage(forCell:atIndex:withID:):AvailableMovieController.swift">
+      </ContextState>
+      <ContextState
          contextName = "MovieDetailsController.setupView(withDetails:):MovieDetailsController.swift">
       </ContextState>
       <ContextState
@@ -23,9 +26,6 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "specialized closure #1 in static EndpointRequestor.requestEndpointData(endpoint:withUIViewController:errorHandler:successHandler:busyTheView:withArgument:):EndpointRequestor.swift">
-      </ContextState>
-      <ContextState
          contextName = "static MovieDetailsController.AddToWatchList(newItem:):MovieDetailsController.swift">
          <PersistentStrings>
             <PersistentString
@@ -34,10 +34,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "static EndpointRequestor.requestEndpointData(endpoint:withUIViewController:errorHandler:successHandler:busyTheView:withArgument:):EndpointRequestor.swift">
+         contextName = "specialized closure #1 in static EndpointRequestor.requestEndpointData(endpoint:withUIViewController:errorHandler:successHandler:busyTheView:withArgument:):EndpointRequestor.swift">
       </ContextState>
       <ContextState
-         contextName = "closure #1 in AvailableMovieController.fetchMovieData():AvailableMovieController.swift">
+         contextName = "closure #1 in AvailableMovieController.fetchMovieData(atPage:):AvailableMovieController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.tableView.indexPathsForVisibleRows">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "MovieDataManager.storeMovieData(receivedJSONData:forPage:):MovieDataManager.swift">
@@ -46,6 +51,9 @@
                value = "cachedPages.count">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in AvailableMovieController.fetchMovieData():AvailableMovieController.swift">
       </ContextState>
       <ContextState
          contextName = "MovieDataManager.storeExternalIDs(atIndex:receivedJSONData:):MovieDataManager.swift">

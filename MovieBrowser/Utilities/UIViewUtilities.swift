@@ -28,8 +28,12 @@ class SpinnerViewController: UIViewController {
     
     static func createSpinnerView(currentUIViewController: UIViewController?) ->UIViewController?  {
         let child = SpinnerViewController()
-        
         DispatchQueue.main.async {
+            // Disable Scrolling if the parent view is a table view
+            if(currentUIViewController is UITableViewController) {
+                (currentUIViewController as! UITableViewController).tableView.isScrollEnabled = false
+            }
+            
             // Add the spinner to the view controller
             currentUIViewController?.addChild(child)
             child.view.frame = (currentUIViewController?.view.frame)!
@@ -40,9 +44,14 @@ class SpinnerViewController: UIViewController {
         return child as UIViewController
     }
     
-    static func stopSpinnerView(busyView: UIViewController?)  {
+    static func stopSpinnerView(currentUIViewController: UIViewController?, busyView: UIViewController?)  {
         let child = busyView as! SpinnerViewController
         DispatchQueue.main.async {
+            // Re-enable Scrolling if the parent view is a table view
+            if(currentUIViewController is UITableViewController) {
+                (currentUIViewController as! UITableViewController).tableView.isScrollEnabled = true
+            }
+            
             // Remove the spinner view controller
             child.willMove(toParent: nil)
             child.view.removeFromSuperview()
@@ -58,8 +67,8 @@ extension UIViewController {
         return SpinnerViewController.createSpinnerView(currentUIViewController: currentUIViewController)
     }
     
-    func unbusyTheViewWithIndicator(busyView: UIViewController?) {
-        SpinnerViewController.stopSpinnerView(busyView: busyView)
+    func unbusyTheViewWithIndicator(currentUIViewController: UIViewController?, busyView: UIViewController?) {
+        SpinnerViewController.stopSpinnerView(currentUIViewController: currentUIViewController, busyView: busyView)
     }
 }
 
@@ -124,4 +133,28 @@ extension UIView {
         }
     }
     
+}
+
+extension UITableView {
+    // Check if cell at the specific section and row is visible
+    // Should only be called from the main UI thread
+    func isCellVisible(section:Int, row: Int) -> Bool {
+        guard let indexes = self.indexPathsForVisibleRows else {
+            return false
+        }
+        return indexes.contains {$0.section == section && $0.row == row }
+    }
+}
+
+extension Int {
+    private static var numberFormatter: NumberFormatter = {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        
+        return numberFormatter
+    }()
+    
+    var commaDelimited: String {
+        return Int.numberFormatter.string(from: NSNumber(value: self)) ?? ""
+    }
 }

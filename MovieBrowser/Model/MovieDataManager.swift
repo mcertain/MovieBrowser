@@ -12,10 +12,12 @@ import UIKit
 let RESULTS_PER_PAGE: Int = 20
 
 struct ResultsPage: Decodable, Equatable  {
-    let page:          Int
-    let total_pages:   Int
-    let total_results: Int
-    var results:       [MovieItem]
+    let page:          Int?
+    let total_pages:   Int?
+    let total_results: Int?
+    var results:       [MovieItem]?
+    let status_code:   Int?
+    let status_message: String?
 }
 
 class MovieItem: Decodable, Equatable {
@@ -91,7 +93,7 @@ class MovieItem: Decodable, Equatable {
     }
     
     func getNumberUserVotes() -> String? {
-        return String(self.vote_count)
+        return self.vote_count.commaDelimited
     }
     
     func getExternalIDs() -> ExternalIDs? {
@@ -146,8 +148,19 @@ class MovieDataManager {
                 return false
             }
             
-            if(cachedPages.count == (forPage-1)) {
-                cachedPages.append(receivedPage)
+            // When there is no status code, then the result was successful otherwise there is an issue
+            if(receivedPage.status_code == nil) {
+                if(cachedPages.count == (forPage-1)) {
+                    cachedPages.append(receivedPage)
+                }
+            }
+            else {
+                var errorMsg:String = "Error for Page Request #:" + String(forPage)
+                if(receivedPage.status_message != nil) {
+                    errorMsg = errorMsg + ", Status Message: " + receivedPage.status_message!
+                }
+                
+                print(errorMsg)
             }
         }
         return true
@@ -176,22 +189,22 @@ class MovieDataManager {
         guard cachedPages.indices.contains(pageCount) == true else {
             return nil
         }
-        guard cachedPages[pageCount]?.results[pageIdx] != nil else {
+        guard cachedPages[pageCount]?.results?[pageIdx] != nil else {
             return nil
         }
-        return cachedPages[pageCount]?.results[pageIdx]
+        return cachedPages[pageCount]?.results?[pageIdx]
     }
     
     func setPosterImage(atIndex: Int, withData: Data) {
         let pageCount = atIndex / RESULTS_PER_PAGE
         let pageIdx = atIndex % RESULTS_PER_PAGE
-        cachedPages[pageCount]?.results[pageIdx].imagePosterData = withData
+        cachedPages[pageCount]?.results?[pageIdx].imagePosterData = withData
     }
     
     func setExternalIDs(atIndex: Int, withData: ExternalIDs) {
         let pageCount = atIndex / RESULTS_PER_PAGE
         let pageIdx = atIndex % RESULTS_PER_PAGE
-        cachedPages[pageCount]?.results[pageIdx].external_ids = withData
+        cachedPages[pageCount]?.results?[pageIdx].external_ids = withData
     }
     
     func GetWatchList() -> [MovieItem] {

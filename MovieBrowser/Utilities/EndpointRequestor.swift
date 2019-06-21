@@ -89,7 +89,7 @@ class EndpointRequestor {
         let task = URLSession.shared.dataTask(with: remoteLocation!) {(data, response, error) in
             // Once the response comes back, then the view can be unbusied and updated
             if(busyTheView == true) {
-                withUIViewController.unbusyTheViewWithIndicator(busyView: busyViewOverlay)
+                withUIViewController.unbusyTheViewWithIndicator(currentUIViewController: withUIViewController, busyView: busyViewOverlay)
             }
             
             // For issues, dispatch the default view indicating the information is unavailable

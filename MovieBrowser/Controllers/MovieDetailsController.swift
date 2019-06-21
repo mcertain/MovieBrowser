@@ -195,7 +195,10 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
                 }
             }
             
-            let posterURL = movieDetails?.getPosterImageThumbURL()
+            guard let posterURL = movieDetails?.getPosterImageThumbURL() else {
+                print("There is no poster image for movie with ID: " + String((movieDetails?.getMovieIDString())!))
+                return
+            }
             EndpointRequestor.requestEndpointData(endpoint: .POSTER_IMAGE_THUMBNAIL,
                                                   withUIViewController: self,
                                                   errorHandler: nil,

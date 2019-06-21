@@ -42,7 +42,7 @@ class AvailableMovieController: UITableViewController, UITableViewDataSourcePref
         }
     }
     
-    func fetchMovieData(atPage: Int) {
+    func fetchMovieData(atPage: Int, withIndexPaths: [IndexPath]?=nil) {
         let pMovieDataManager = MovieDataManager.GetInstance()
         
         // If the page isn't in cache, then go ahead and download it
@@ -56,9 +56,16 @@ class AvailableMovieController: UITableViewController, UITableViewDataSourcePref
                 }
                 
                 // When the data is successfully retrieved and stored, then reload the table data
-                // from the Movie Data Manager's cache
+                // from the Movie Data Manager's cache but only for the rows loaded
                 DispatchQueue.main.async {
-                    self.tableView.reloadData()
+                    let cachedIndexPaths = withIndexPaths
+                    if(cachedIndexPaths == nil || cachedIndexPaths?.count == 0) {
+                        // Reload all the rows for the first cache or when data is fetched outside of prefetch
+                        self.tableView.reloadData()
+                    }
+                    else {
+                        self.tableView.reloadRows(at: cachedIndexPaths!, with: .automatic)
+                    }
                 }
             }
         
@@ -66,7 +73,7 @@ class AvailableMovieController: UITableViewController, UITableViewDataSourcePref
                                                   withUIViewController: self,
                                                   errorHandler: nil,
                                                   successHandler: successHandler,
-                                                  busyTheView: true,
+                                                  busyTheView: false,
                                                   withArgument: atPage as AnyObject)
         }
     }
@@ -89,11 +96,16 @@ class AvailableMovieController: UITableViewController, UITableViewDataSourcePref
                 
                 // Then update only the cell that needs to display the movie cover image
                 DispatchQueue.main.async {
-                    forCell.movieCoverImage.image = UIImage(data: content)
+                    if(self.tableView.isCellVisible(section: 0, row: atIndex)) {
+                        forCell.movieCoverImage.image = UIImage(data: content)
+                    }
                 }
             }
             
-            let posterURL = movieDetails?.getPosterImageThumbURL()
+            guard let posterURL = movieDetails?.getPosterImageThumbURL() else {
+                print("There is no poster image index \(atIndex) for movie with ID: " + String((movieDetails?.getMovieIDString())!))
+                return
+            }
             EndpointRequestor.requestEndpointData(endpoint: .POSTER_IMAGE_THUMBNAIL,
                                                   withUIViewController: self,
                                                   errorHandler: nil,
@@ -103,7 +115,11 @@ class AvailableMovieController: UITableViewController, UITableViewDataSourcePref
         }
         else {
             // Otherwise, if it's already cached then display it
-            forCell.movieCoverImage.image = posterImage
+            DispatchQueue.main.async {
+                if(self.tableView.isCellVisible(section: 0, row: atIndex)) {
+                    forCell.movieCoverImage.image = posterImage
+                }
+            }
         }
     }
     
@@ -149,7 +165,7 @@ class AvailableMovieController: UITableViewController, UITableViewDataSourcePref
         let pMovieDataManager = MovieDataManager.GetInstance()
         var pageFetchCount: Int = pMovieDataManager?.getPageCount() ?? 0
         while(pageFetchCount <= prefetchPage) {
-            self.fetchMovieData(atPage: pageFetchCount)
+            self.fetchMovieData(atPage: pageFetchCount, withIndexPaths: indexPaths)
             pageFetchCount = pageFetchCount+1
         }
     }
