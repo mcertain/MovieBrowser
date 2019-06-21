@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8F014FFA22BD2A2500B509CB /* EndpointDescriptorBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F014FF922BD2A2500B509CB /* EndpointDescriptorBase.swift */; };
+		8F014FFC22BD2A6D00B509CB /* MovieDBEndpointDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F014FFB22BD2A6D00B509CB /* MovieDBEndpointDescriptor.swift */; };
 		8F25BC852265159900BA2438 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F25BC842265159900BA2438 /* AppDelegate.swift */; };
 		8F25BC872265159900BA2438 /* AvailableMovieController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F25BC862265159900BA2438 /* AvailableMovieController.swift */; };
 		8F25BC8A2265159900BA2438 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8F25BC882265159900BA2438 /* Main.storyboard */; };
@@ -35,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8F014FF922BD2A2500B509CB /* EndpointDescriptorBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointDescriptorBase.swift; sourceTree = "<group>"; };
+		8F014FFB22BD2A6D00B509CB /* MovieDBEndpointDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDBEndpointDescriptor.swift; sourceTree = "<group>"; };
 		8F25BC812265159900BA2438 /* MovieBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F25BC842265159900BA2438 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8F25BC862265159900BA2438 /* AvailableMovieController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableMovieController.swift; sourceTree = "<group>"; };
@@ -108,6 +112,7 @@
 			children = (
 				8F25BC9E22656FE600BA2438 /* MovieDataManager.swift */,
 				8F25BC8B2265159900BA2438 /* MovieBrowser.xcdatamodeld */,
+				8F014FFB22BD2A6D00B509CB /* MovieDBEndpointDescriptor.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -141,6 +146,7 @@
 				8F25BCA92266670900BA2438 /* NetworkAvailability.swift */,
 				8F25BCA72266596500BA2438 /* Reachability.swift */,
 				8FE79F8122695CDE006468A9 /* EndpointRequestor.swift */,
+				8F014FF922BD2A2500B509CB /* EndpointDescriptorBase.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -254,9 +260,11 @@
 				8FE79F8222695CDE006468A9 /* EndpointRequestor.swift in Sources */,
 				8F25BC852265159900BA2438 /* AppDelegate.swift in Sources */,
 				8F25BCAA2266670900BA2438 /* NetworkAvailability.swift in Sources */,
+				8F014FFC22BD2A6D00B509CB /* MovieDBEndpointDescriptor.swift in Sources */,
 				8F25BC8D2265159900BA2438 /* MovieBrowser.xcdatamodeld in Sources */,
 				8F25BCA82266596500BA2438 /* Reachability.swift in Sources */,
 				8F25BCA52265CC1F00BA2438 /* MovieDetailsController.swift in Sources */,
+				8F014FFA22BD2A2500B509CB /* EndpointDescriptorBase.swift in Sources */,
 				8F25BCAC22666E4000BA2438 /* UIViewUtilities.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

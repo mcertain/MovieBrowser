@@ -27,16 +27,16 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
         guard movieDetails != nil else {
             return
         }
-        EndpointRequestor.openMovieLink(withEndpoint: .OPEN_IMDB_DETAILS,
-                                        queryString: movieDetails?.external_ids!.imdb_id)
+        EndpointRequestor.openExternalLink(endpointDescriptor: MovieDBEndpointDescriptor(endpoint: .OPEN_IMDB_DETAILS),
+                                           withTargetArgument: movieDetails?.external_ids!.imdb_id as AnyObject?)
     }
     
     @IBAction func amazonButtonAction(_ sender: Any) {
         guard movieDetails != nil else {
             return
         }
-        EndpointRequestor.openMovieLink(withEndpoint: .OPEN_AMAZON_DETAILS,
-                                        queryString: movieDetails?.getMovieTitleQueryString()!)
+        EndpointRequestor.openExternalLink(endpointDescriptor: MovieDBEndpointDescriptor(endpoint: .OPEN_AMAZON_DETAILS),
+                                           withTargetArgument: movieDetails?.getMovieTitleQueryString()! as AnyObject?)
     }
     
     @IBAction func addToWatchListButtonAction(_ sender: Any) {
@@ -199,12 +199,12 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
                 print("There is no poster image for movie with ID: " + String((movieDetails?.getMovieIDString())!))
                 return
             }
-            EndpointRequestor.requestEndpointData(endpoint: .POSTER_IMAGE_THUMBNAIL,
+            EndpointRequestor.requestEndpointData(endpointDescriptor: MovieDBEndpointDescriptor(endpoint: .POSTER_IMAGE_THUMBNAIL),
                                                   withUIViewController: self,
                                                   errorHandler: nil,
                                                   successHandler: successHandler,
                                                   busyTheView: false,
-                                                  withArgument: posterURL as AnyObject)
+                                                  withTargetArgument: posterURL as AnyObject)
         }
     }
     
@@ -224,12 +224,12 @@ class MovieDetailsController : UIViewController, UINavigationControllerDelegate 
                 }
             }
             
-            EndpointRequestor.requestEndpointData(endpoint: .EXTERNAL_ID_QUERY,
+            EndpointRequestor.requestEndpointData(endpointDescriptor: MovieDBEndpointDescriptor(endpoint: .EXTERNAL_ID_QUERY),
                                                   withUIViewController: self,
                                                   errorHandler: nil,
                                                   successHandler: successHandler,
                                                   busyTheView: true,
-                                                  withArgument: movieID as AnyObject)
+                                                  withTargetArgument: movieID as AnyObject)
         }
         else {
             // Otherwise, display links with ID from cache

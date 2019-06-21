@@ -9,82 +9,43 @@
 import Foundation
 import UIKit
 
-let MOVIEDB_LISTING_PREFIX:String = "https://api.themoviedb.org/3/movie/popular?api_key=ac975fc8b7261ca68365d2cf95286764&language=en-US&page="
-
-// The Interim String should be the Movie DB ID
-let EXTERNAL_ID_QUERY_PREFIX:String = "https://api.themoviedb.org/3/movie/"
-let EXTERNAL_ID_QUERY_SUFFIX:String = "/external_ids?api_key=ac975fc8b7261ca68365d2cf95286764"
-
-// The Final String should be the Movie DB ID
-let POSTER_IMAGE_PREFIX:String = "https://image.tmdb.org/t/p"
-let POSTER_IMAGE_FULL_SUFFIX:String = "/original"
-let POSTER_IMAGE_THUMB_SUFFIX:String = "/w500"
-
-// The Interim string should be the IMDB ID
-let IMDB_URL_PREFIX:String = "https://www.imdb.com/title/"
-let IMDB_URL_SUFFIX:String = "/"
-
-// The Interim string should be the movie title with spaces replaced by +
-let AMAZON_URL_PREFIX:String = "https://www.amazon.com/s?k="
-let AMAZON_URL_SUFFIX:String = "&i=instant-video&tag=ftrx-20"
-
-enum MovieDataEndpoint: Int {
-    case MOVIE_LISTING
-    case EXTERNAL_ID_QUERY
-    case POSTER_IMAGE_THUMBNAIL
-}
-
-enum ExternalLinkEndpoint: Int {
-    case OPEN_IMDB_DETAILS
-    case OPEN_AMAZON_DETAILS
-}
-
 class EndpointRequestor {
     /// We store all ongoing tasks here to avoid duplicating tasks.
     static var tasks = [URLSessionTask]()
     
-    static func openMovieLink(withEndpoint: ExternalLinkEndpoint, queryString: String?) {
-        guard queryString != nil else {
+    static func openExternalLink(endpointDescriptor: EndpointDescriptorBase, withTargetArgument: AnyObject?=nil) {
+        guard withTargetArgument != nil else {
             return
         }
         
-        var trackLocation: URL?
-        switch withEndpoint {
-        case .OPEN_IMDB_DETAILS:
-            trackLocation = URL(string: IMDB_URL_PREFIX + queryString! + IMDB_URL_SUFFIX)
-        case .OPEN_AMAZON_DETAILS:
-            trackLocation = URL(string: AMAZON_URL_PREFIX + queryString! + AMAZON_URL_SUFFIX)
-        }
-        
-        guard trackLocation != nil else {
+        // Use the provide endpoint descriptor to get the target URL using the supplied target arguments
+        let remoteLocation: URL? = endpointDescriptor.getTargetURL(withArgument: withTargetArgument as AnyObject)
+        guard remoteLocation != nil else {
             return
-        }
-        UIApplication.shared.open(trackLocation!, options: [:])
-    }
-    
-    static func requestEndpointData(endpoint: MovieDataEndpoint,
-                                    withUIViewController: UIViewController,
-                                    errorHandler: (() -> Void)?,
-                                    successHandler: ((_ receivedData: Data?, _ withArgument: AnyObject?) -> Void)?,
-                                    busyTheView: Bool,
-                                    withArgument: AnyObject?=nil) {
-        var remoteLocation: URL?
-        switch endpoint {
-        case .MOVIE_LISTING:
-            remoteLocation = URL(string: MOVIEDB_LISTING_PREFIX + String(withArgument as! Int))
-        case .EXTERNAL_ID_QUERY:
-            remoteLocation = URL(string: EXTERNAL_ID_QUERY_PREFIX + (withArgument as! String) + EXTERNAL_ID_QUERY_SUFFIX)
-        case .POSTER_IMAGE_THUMBNAIL:
-            remoteLocation = (withArgument as! URL)
         }
         
         guard remoteLocation != nil else {
             return
         }
+        UIApplication.shared.open(remoteLocation!, options: [:])
+    }
+    
+    static func requestEndpointData(endpointDescriptor: EndpointDescriptorBase,
+                                    withUIViewController: UIViewController,
+                                    errorHandler: (() -> Void)?,
+                                    successHandler: ((_ receivedData: Data?, _ withArgument: AnyObject?) -> Void)?,
+                                    busyTheView: Bool,
+                                    withTargetArgument: AnyObject?=nil) {
         
+        // Use the provide endpoint descriptor to get the target URL using the supplied target arguments
+        let remoteLocation: URL? = endpointDescriptor.getTargetURL(withArgument: withTargetArgument)
+        guard remoteLocation != nil else {
+            return
+        }
+        
+        // Don't attempt to fetch the same resource twice while one fetch request is pending
         guard tasks.index(where: { $0.originalRequest?.url == remoteLocation }) == nil else {
-            // We're already downloading the image.
-            print("Attempted to download the same resource more than once.")
+            print("Attempted to fetch the same resource more than once before the previous fetch had completed.")
             return
         }
         
@@ -94,6 +55,7 @@ class EndpointRequestor {
         if(busyTheView == true) {
             busyViewOverlay = withUIViewController.busyTheViewWithIndicator(currentUIViewController: withUIViewController)
         }
+        
         let task = URLSession.shared.dataTask(with: remoteLocation!) {(data, response, error) in
             // Find and remove task reference once the content processing is done
             guard let taskIndex = tasks.index(where: { $0.originalRequest?.url == remoteLocation }) else {
@@ -120,7 +82,7 @@ class EndpointRequestor {
                 return
             }
             
-            successHandler?(content, withArgument)
+            successHandler?(content, withTargetArgument)
             tasks.remove(at: taskIndex)
         }
         task.resume()

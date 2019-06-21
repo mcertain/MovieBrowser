@@ -69,12 +69,12 @@ class AvailableMovieController: UITableViewController, UITableViewDataSourcePref
                 }
             }
         
-            EndpointRequestor.requestEndpointData(endpoint: .MOVIE_LISTING,
+            EndpointRequestor.requestEndpointData(endpointDescriptor: MovieDBEndpointDescriptor(endpoint: .MOVIE_LISTING),
                                                   withUIViewController: self,
                                                   errorHandler: nil,
                                                   successHandler: successHandler,
                                                   busyTheView: false,
-                                                  withArgument: atPage as AnyObject)
+                                                  withTargetArgument: atPage as AnyObject)
         }
     }
     
@@ -106,12 +106,12 @@ class AvailableMovieController: UITableViewController, UITableViewDataSourcePref
                 print("There is no poster image index \(atIndex) for movie with ID: " + String((movieDetails?.getMovieIDString())!))
                 return
             }
-            EndpointRequestor.requestEndpointData(endpoint: .POSTER_IMAGE_THUMBNAIL,
+            EndpointRequestor.requestEndpointData(endpointDescriptor: MovieDBEndpointDescriptor(endpoint: .POSTER_IMAGE_THUMBNAIL),
                                                   withUIViewController: self,
                                                   errorHandler: nil,
                                                   successHandler: successHandler,
                                                   busyTheView: false,
-                                                  withArgument: posterURL as AnyObject)
+                                                  withTargetArgument: posterURL as AnyObject)
         }
         else {
             // Otherwise, if it's already cached then display it
